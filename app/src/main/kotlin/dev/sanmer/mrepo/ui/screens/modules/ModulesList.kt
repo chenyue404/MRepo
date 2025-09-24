@@ -35,6 +35,7 @@ import dev.sanmer.mrepo.model.online.VersionItem
 import dev.sanmer.mrepo.ui.component.VersionItemBottomSheet
 import dev.sanmer.mrepo.ui.component.scrollbar.VerticalFastScrollbar
 import dev.sanmer.mrepo.viewmodel.ModulesViewModel
+import java.util.UUID
 
 @Composable
 internal fun ModulesList(
@@ -53,7 +54,7 @@ internal fun ModulesList(
     ) {
         items(
             items = list,
-            key = { it.original.id }
+            key = { UUID.randomUUID() }
         ) { module ->
             ModuleItem(
                 module = module,

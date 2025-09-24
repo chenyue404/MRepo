@@ -15,6 +15,8 @@ import dev.sanmer.mrepo.ui.component.scrollbar.VerticalFastScrollbar
 import dev.sanmer.mrepo.ui.utils.navigateSingleTopTo
 import dev.sanmer.mrepo.viewmodel.ModuleViewModel
 import dev.sanmer.mrepo.viewmodel.RepositoryViewModel
+import java.util.UUID
+import kotlin.uuid.Uuid
 
 @Composable
 internal fun ModulesList(
@@ -31,7 +33,7 @@ internal fun ModulesList(
     ) {
         items(
             items = list,
-            key = { it.original.id }
+            key = { UUID.randomUUID() }
         ) { module ->
             ModuleItem(
                 module = module,
