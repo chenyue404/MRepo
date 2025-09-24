@@ -89,7 +89,7 @@ internal fun RepositoryItem(
                 )
 
                 Text(
-                    text = stringResource(id = R.string.module_update_at, repo.timestamp.toDateTime()),
+                    text = stringResource(id = R.string.module_update_at, repo.metadata.timestamp.toDateTime()),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.outline
                 )

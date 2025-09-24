@@ -13,7 +13,6 @@ data class RepoEntity(
     val disable: Boolean,
     val size: Int,
     val name: String,
-    val timestamp: Long,
     @Embedded val metadata: Metadata
 ) {
     constructor(url: String) : this(
@@ -21,26 +20,26 @@ data class RepoEntity(
         disable = false,
         size = 0,
         name = url,
-        timestamp = 0L,
         metadata = Metadata()
     )
 
     fun copy(modulesJson: ModulesJson) = copy(
         size = modulesJson.modules.size,
         name = modulesJson.name,
-        timestamp = modulesJson.timestamp,
         metadata = Metadata(modulesJson.metadata)
     )
 
     data class Metadata(
         val homepage: String = "",
         val donate: String = "",
-        val support: String = ""
+        val support: String = "",
+        val timestamp: Double = 0.0,
     ) {
         constructor(original: ModulesJson.Metadata) : this(
             homepage = original.homepage,
             donate = original.donate,
-            support = original.support
+            support = original.support,
+            timestamp = original.timestamp
         )
     }
 }

@@ -12,7 +12,7 @@ data class VersionItemEntity(
     @ColumnInfo(name = "repo_url")
     val repoUrl: String,
     val id: String,
-    val timestamp: Long,
+    val timestamp: Double,
     val version: String,
     @ColumnInfo(name = "version_code")
     val versionCode: Int,

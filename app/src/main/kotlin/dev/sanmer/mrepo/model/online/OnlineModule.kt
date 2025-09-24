@@ -9,7 +9,7 @@ data class OnlineModule(
     val id: String,
     val name: String,
     val version: String,
-    @SerialName("version_code")
+//    @SerialName("version_code")
     val versionCode: Int,
     val author: String,
     val description: String,

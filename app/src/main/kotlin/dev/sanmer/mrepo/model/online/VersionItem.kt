@@ -8,11 +8,11 @@ import kotlinx.serialization.Transient
 data class VersionItem(
     @Transient
     val repoUrl: String = "",
-    val timestamp: Long,
+    val timestamp: Double,
     val version: String,
-    @SerialName("version_code")
+//    @SerialName("version_code")
     val versionCode: Int,
-    @SerialName("zip_url")
+//    @SerialName("zip_url")
     val zipUrl: String,
     val changelog: String
 )

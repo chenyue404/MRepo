@@ -13,7 +13,7 @@ data class UpdateJson(
     val zipUrl: String,
     val changelog: String
 ) {
-    fun toItemOrNull(timestamp: Long): VersionItem? {
+    fun toItemOrNull(timestamp: Double): VersionItem? {
         if (!NetworkCompat.isUrl(zipUrl)) return null
 
         val changelog = when {
@@ -39,7 +39,7 @@ data class UpdateJson(
                 val json = NetworkCompat.defaultJson.decodeFromStream<UpdateJson>(body.byteStream())
                 val lastModified = headers.getInstant("Last-Modified")?.toEpochMilli()
 
-                json.toItemOrNull(lastModified ?: System.currentTimeMillis())
+                json.toItemOrNull((lastModified ?: System.currentTimeMillis()).toDouble())
             }
 
             return result.getOrNull()

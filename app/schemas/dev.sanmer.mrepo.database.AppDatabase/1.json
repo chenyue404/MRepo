@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d6e648e0e34c262d9de5c5d59368e3d8",
+    "identityHash": "5040331b432be701c7492994ab55fea9",
     "entities": [
       {
         "tableName": "repo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`url` TEXT NOT NULL, `disable` INTEGER NOT NULL, `size` INTEGER NOT NULL, `name` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `homepage` TEXT NOT NULL, `donate` TEXT NOT NULL, `support` TEXT NOT NULL, PRIMARY KEY(`url`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`url` TEXT NOT NULL, `disable` INTEGER NOT NULL, `size` INTEGER NOT NULL, `name` TEXT NOT NULL, `timestamp` REAL NOT NULL, `homepage` TEXT NOT NULL, `donate` TEXT NOT NULL, `support` TEXT NOT NULL, PRIMARY KEY(`url`))",
         "fields": [
           {
             "fieldPath": "url",
@@ -35,7 +35,7 @@
           {
             "fieldPath": "timestamp",
             "columnName": "timestamp",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
@@ -155,7 +155,7 @@
       },
       {
         "tableName": "version",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repo_url` TEXT NOT NULL, `id` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `version` TEXT NOT NULL, `version_code` INTEGER NOT NULL, `zip_url` TEXT NOT NULL, `changelog` TEXT NOT NULL, PRIMARY KEY(`id`, `repo_url`, `version_code`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repo_url` TEXT NOT NULL, `id` TEXT NOT NULL, `timestamp` REAL NOT NULL, `version` TEXT NOT NULL, `version_code` INTEGER NOT NULL, `zip_url` TEXT NOT NULL, `changelog` TEXT NOT NULL, PRIMARY KEY(`id`, `repo_url`, `version_code`))",
         "fields": [
           {
             "fieldPath": "repoUrl",
@@ -172,7 +172,7 @@
           {
             "fieldPath": "timestamp",
             "columnName": "timestamp",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
@@ -309,7 +309,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd6e648e0e34c262d9de5c5d59368e3d8')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5040331b432be701c7492994ab55fea9')"
     ]
   }
 }

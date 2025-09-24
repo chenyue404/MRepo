@@ -147,7 +147,7 @@ class RepositoryViewModel @Inject constructor(
         val installed: Boolean,
         val updatable: Boolean,
         val hasLicense: Boolean,
-        val lastUpdated: Long
+        val lastUpdated: Double
     ) {
         companion object {
 
@@ -176,7 +176,7 @@ class RepositoryViewModel @Inject constructor(
                 installed = true,
                 updatable = false,
                 hasLicense = true,
-                lastUpdated = 1660640640000L
+                lastUpdated = 1660640640000.0
             )
         }
     }
