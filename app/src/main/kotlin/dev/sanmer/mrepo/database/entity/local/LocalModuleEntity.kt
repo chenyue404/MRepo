@@ -16,7 +16,7 @@ data class LocalModuleEntity(
     @ColumnInfo(name = "version_code")
     val versionCode: Int,
     val author: String,
-    val description: String,
+    val description: String = "",
     val state: String,
     @ColumnInfo(name = "update_json")
     val updateJson: String,

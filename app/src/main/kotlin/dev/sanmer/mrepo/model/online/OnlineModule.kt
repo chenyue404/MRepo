@@ -12,7 +12,7 @@ data class OnlineModule(
 //    @SerialName("version_code")
     val versionCode: Int,
     val author: String,
-    val description: String,
+    val description: String = "",
     val metadata: Metadata = Metadata(),
     val versions: List<VersionItem>,
 ) {

@@ -19,7 +19,7 @@ data class OnlineModuleEntity(
     @ColumnInfo(name = "version_code")
     val versionCode: Int,
     val author: String,
-    val description: String,
+    val description: String = "",
     @Embedded val metadata: Metadata
 ) {
     constructor(
