@@ -1,5 +1,8 @@
 package dev.sanmer.mrepo.ui.screens.settings.repositories
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
@@ -36,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
@@ -43,6 +47,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -69,14 +74,24 @@ fun RepositoriesScreen(
     var message: String by remember { mutableStateOf("") }
 
     var failure by remember { mutableStateOf(false) }
-    if (failure) FailureDialog(
-        name = name,
-        message = message,
-        onClose = {
-            failure = false
-            message = ""
-        }
-    )
+    if (failure) {
+        val context = LocalContext.current
+        FailureDialog(
+            name = name,
+            message = message,
+            onClose = {
+                failure = false
+                message = ""
+            },
+            onAction = {
+                val manager =
+                    context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                manager.setPrimaryClip(ClipData.newPlainText("text", "$name\n$message"))
+                failure = false
+                message = ""
+            }
+        )
+    }
 
     var add by remember { mutableStateOf(false) }
     if (add) AddDialog(
@@ -208,7 +223,8 @@ private fun AddDialog(
 private fun FailureDialog(
     name: String,
     message: String,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    onAction: () -> Unit,
 ) = AlertDialog(
     shape = RoundedCornerShape(20.dp),
     onDismissRequest = onClose,
@@ -223,9 +239,16 @@ private fun FailureDialog(
     },
     confirmButton = {
         TextButton(
+            onClick = onAction
+        ) {
+            Text(text = stringResource(id = android.R.string.copy))
+        }
+    },
+    dismissButton = {
+        TextButton(
             onClick = onClose
         ) {
-            Text(text = stringResource(id = R.string.dialog_ok))
+            Text(text = stringResource(id = R.string.dialog_cancel))
         }
     }
 )
