@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5040331b432be701c7492994ab55fea9",
+    "identityHash": "caaac853a7899618c722831aea518bb9",
     "entities": [
       {
         "tableName": "repo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`url` TEXT NOT NULL, `disable` INTEGER NOT NULL, `size` INTEGER NOT NULL, `name` TEXT NOT NULL, `timestamp` REAL NOT NULL, `homepage` TEXT NOT NULL, `donate` TEXT NOT NULL, `support` TEXT NOT NULL, PRIMARY KEY(`url`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`url` TEXT NOT NULL, `disable` INTEGER NOT NULL, `size` INTEGER NOT NULL, `name` TEXT NOT NULL, `homepage` TEXT NOT NULL, `donate` TEXT NOT NULL, `support` TEXT NOT NULL, `timestamp` REAL NOT NULL, PRIMARY KEY(`url`))",
         "fields": [
           {
             "fieldPath": "url",
@@ -33,12 +33,6 @@
             "notNull": true
           },
           {
-            "fieldPath": "timestamp",
-            "columnName": "timestamp",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
             "fieldPath": "metadata.homepage",
             "columnName": "homepage",
             "affinity": "TEXT",
@@ -55,6 +49,12 @@
             "columnName": "support",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "metadata.timestamp",
+            "columnName": "timestamp",
+            "affinity": "REAL",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -68,7 +68,7 @@
       },
       {
         "tableName": "online",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repo_url` TEXT NOT NULL, `id` TEXT NOT NULL, `name` TEXT NOT NULL, `version` TEXT NOT NULL, `version_code` INTEGER NOT NULL, `author` TEXT NOT NULL, `description` TEXT NOT NULL, `license` TEXT NOT NULL, `homepage` TEXT NOT NULL, `source` TEXT NOT NULL, `donate` TEXT NOT NULL, `support` TEXT NOT NULL, PRIMARY KEY(`id`, `repo_url`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repo_url` TEXT NOT NULL, `id` TEXT NOT NULL, `name` TEXT NOT NULL, `version` TEXT NOT NULL, `version_code` INTEGER NOT NULL, `author` TEXT NOT NULL, `description` TEXT NOT NULL, `readme` TEXT NOT NULL, `type` TEXT NOT NULL, `homepage` TEXT NOT NULL, `source` TEXT NOT NULL, `license` TEXT NOT NULL, `donate` TEXT NOT NULL, `support` TEXT NOT NULL, PRIMARY KEY(`id`, `repo_url`))",
         "fields": [
           {
             "fieldPath": "repoUrl",
@@ -113,31 +113,43 @@
             "notNull": true
           },
           {
-            "fieldPath": "metadata.license",
-            "columnName": "license",
+            "fieldPath": "readme",
+            "columnName": "readme",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "metadata.homepage",
+            "fieldPath": "track.type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "track.homepage",
             "columnName": "homepage",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "metadata.source",
+            "fieldPath": "track.source",
             "columnName": "source",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "metadata.donate",
+            "fieldPath": "track.license",
+            "columnName": "license",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "track.donate",
             "columnName": "donate",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "metadata.support",
+            "fieldPath": "track.support",
             "columnName": "support",
             "affinity": "TEXT",
             "notNull": true
@@ -309,7 +321,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5040331b432be701c7492994ab55fea9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'caaac853a7899618c722831aea518bb9')"
     ]
   }
 }

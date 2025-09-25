@@ -166,7 +166,7 @@ class RepositoryViewModel @Inject constructor(
                     original = this,
                     installed = installed,
                     updatable = updatable,
-                    hasLicense = metadata.license.isNotBlank(),
+                    hasLicense = track.license.isNotBlank(),
                     lastUpdated = versions.maxBy { it.versionCode }.timestamp
                 )
             }

@@ -20,7 +20,9 @@ data class OnlineModuleEntity(
     val versionCode: Int,
     val author: String,
     val description: String = "",
-    @Embedded val metadata: Metadata
+    val readme: String = "",
+    @Embedded
+    val track: Track,
 ) {
     constructor(
         repoUrl: String,
@@ -33,7 +35,8 @@ data class OnlineModuleEntity(
         versionCode = original.versionCode,
         author = original.author,
         description = original.description,
-        metadata = Metadata(original.metadata)
+        readme = original.readme,
+        track = Track(original.track)
     )
 
     fun toJson(versions: List<VersionItem> = emptyList()) = OnlineModule(
@@ -43,31 +46,35 @@ data class OnlineModuleEntity(
         versionCode = versionCode,
         author = author,
         description = description,
-        metadata = metadata.toJson(),
-        versions = versions
+        versions = versions,
+        readme = readme,
+        track = track.toJson(),
     )
 
-    data class Metadata(
-        val license: String = "",
+    data class Track(
+        val type: String = "",
         val homepage: String = "",
         val source: String = "",
+        val license: String = "",
         val donate: String = "",
         val support: String = ""
     ) {
-        constructor(original: OnlineModule.Metadata) : this(
-            license = original.license,
+        constructor(original: OnlineModule.Track) : this(
+            type = original.type,
             homepage = original.homepage,
             source = original.source,
+            license = original.license,
+            donate = original.donate,
             support = original.support,
-            donate = original.donate
         )
 
-        fun toJson() = OnlineModule.Metadata(
-            license = license,
+        fun toJson() = OnlineModule.Track(
+            type = type,
             homepage = homepage,
             source = source,
+            license = license,
+            donate = donate,
             support = support,
-            donate = donate
         )
     }
 }

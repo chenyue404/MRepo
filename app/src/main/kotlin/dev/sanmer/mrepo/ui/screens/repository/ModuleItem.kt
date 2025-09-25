@@ -98,7 +98,7 @@ internal fun ModuleItem(
                 horizontalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 if (menu.showLicense) {
-                    LabelItem(text = module.original.metadata.license)
+                    LabelItem(text = module.original.track.license)
                 }
 
                 when {

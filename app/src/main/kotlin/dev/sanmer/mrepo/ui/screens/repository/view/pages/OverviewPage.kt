@@ -1,6 +1,9 @@
 package dev.sanmer.mrepo.ui.screens.repository.view.pages
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,8 +13,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ElevatedAssistChip
 import androidx.compose.material3.ElevatedFilterChip
@@ -29,12 +35,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import dev.sanmer.mrepo.R
+import dev.sanmer.mrepo.compat.NetworkCompat
+import dev.sanmer.mrepo.compat.NetworkCompat.Compose.requestString
 import dev.sanmer.mrepo.model.local.LocalModule
 import dev.sanmer.mrepo.model.local.versionDisplay
 import dev.sanmer.mrepo.model.online.OnlineModule
 import dev.sanmer.mrepo.model.online.VersionItem
+import dev.sanmer.mrepo.ui.component.Loading
+import dev.sanmer.mrepo.ui.component.MarkdownText
+import dev.sanmer.mrepo.utils.extensions.openUrl
 import dev.sanmer.mrepo.utils.extensions.toDateTime
 
 @Composable
@@ -91,6 +106,50 @@ internal fun OverviewPage(
         )
 
         HorizontalDivider(thickness = 0.9.dp)
+    }
+
+    online.readme.takeIf { it.isNotEmpty() }?.let {
+        ReadMeItem(it)
+    }
+}
+
+@Composable
+private fun ReadMeItem(url: String) {
+    val result = requestString(url)
+
+    Crossfade(
+        targetState = result,
+        label = "ReadMeItem"
+    ) {
+        when {
+            it.isLoading -> Loading(
+                minHeight = 200.dp
+            )
+
+            it.isSuccess -> {
+                val changelog by remember {
+                    derivedStateOf {
+                        val text: String = it.data()
+                        if (NetworkCompat.isHTML(text)) {
+                            ""
+                        } else {
+                            text
+                        }
+                    }
+                }
+
+                MarkdownText(
+                    text = changelog,
+                    color = AlertDialogDefaults.textContentColor,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+//                        .verticalScroll(rememberScrollState())
+                        .fillMaxSize()
+                        .padding(horizontal = 18.dp)
+                        .padding(vertical = 18.dp)
+                )
+            }
+        }
     }
 }
 
@@ -181,20 +240,24 @@ private fun LocalItem(
             onClick = { setUpdatable(!updatable) },
             label = {
                 Text(
-                    text = stringResource(id = if (updatable) {
-                        R.string.view_module_update_notifying
-                    } else {
-                        R.string.view_module_update_dismissed
-                    })
+                    text = stringResource(
+                        id = if (updatable) {
+                            R.string.view_module_update_notifying
+                        } else {
+                            R.string.view_module_update_dismissed
+                        }
+                    )
                 )
             },
             leadingIcon = {
                 Icon(
-                    painter = painterResource(id = if (updatable) {
-                        R.drawable.notification
-                    } else {
-                        R.drawable.notification_off
-                    }),
+                    painter = painterResource(
+                        id = if (updatable) {
+                            R.drawable.notification
+                        } else {
+                            R.drawable.notification_off
+                        }
+                    ),
                     contentDescription = null,
                     modifier = Modifier.size(FilterChipDefaults.IconSize)
                 )

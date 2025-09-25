@@ -1,9 +1,11 @@
 package dev.sanmer.mrepo.model.online
 
+import android.annotation.SuppressLint
 import dev.sanmer.mrepo.utils.StrUtil
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@SuppressLint("UnsafeOptInUsageError")
 @Serializable
 data class OnlineModule(
     val id: String,
@@ -13,18 +15,20 @@ data class OnlineModule(
     val versionCode: Int,
     val author: String,
     val description: String = "",
-    val metadata: Metadata = Metadata(),
     val versions: List<VersionItem>,
+    val readme: String = "",
+    val track: Track = Track(),
 ) {
     val versionDisplay by lazy {
         StrUtil.getVersionDisplay(version, versionCode)
     }
 
     @Serializable
-    data class Metadata(
-        val license: String = "",
+    data class Track(
+        val type: String = "",
         val homepage: String = "",
         val source: String = "",
+        val license: String = "",
         val donate: String = "",
         val support: String = ""
     )
@@ -37,7 +41,7 @@ data class OnlineModule(
             versionCode = 1703,
             author = "Sanmer",
             description = "This is an example!",
-            metadata = Metadata(
+            track = Track(
                 license = "GPL-3.0"
             ),
             versions = emptyList()

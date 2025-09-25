@@ -78,11 +78,11 @@ private fun TopBarContent(
     val userPreferences = LocalUserPreferences.current
     val repositoryMenu = userPreferences.repositoryMenu
 
-    val hasLicense by remember(module.metadata) {
-        derivedStateOf { module.metadata.license.isNotBlank() }
+    val hasLicense by remember(module.track) {
+        derivedStateOf { module.track.license.isNotBlank() }
     }
-    val hasDonate by remember(module.metadata) {
-        derivedStateOf { module.metadata.donate.isNotBlank() }
+    val hasDonate by remember(module.track) {
+        derivedStateOf { module.track.donate.isNotBlank() }
     }
 
     Row(
@@ -123,7 +123,7 @@ private fun TopBarContent(
                     append("ID = ${module.id}")
                     if (hasLicense) {
                         append(", ")
-                        append("License = ${module.metadata.license}")
+                        append("License = ${module.track.license}")
                     }
                 },
                 style = MaterialTheme.typography.labelSmall,
@@ -141,14 +141,14 @@ private fun TopBarContent(
     ) {
         if (hasLicense) {
             LicenseItem(
-                licenseId = module.metadata.license
+                licenseId = module.track.license
             )
         }
 
         if (hasDonate) {
             TagItem(
                 icon = R.drawable.currency_dollar,
-                onClick = { context.openUrl(module.metadata.donate) }
+                onClick = { context.openUrl(module.track.donate) }
             )
         }
     }

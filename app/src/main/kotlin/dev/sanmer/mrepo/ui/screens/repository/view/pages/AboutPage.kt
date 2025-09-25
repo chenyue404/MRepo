@@ -38,19 +38,19 @@ internal fun AboutPage(
 ) {
     ValueItem(
         key = stringResource(id = R.string.view_module_homepage),
-        value = online.metadata.homepage,
+        value = online.track.homepage,
         icon = R.drawable.home
     )
 
     ValueItem(
         key = stringResource(id = R.string.view_module_source),
-        value = online.metadata.source,
+        value = online.track.source,
         icon = R.drawable.brand_git
     )
 
     ValueItem(
         key = stringResource(id = R.string.view_module_support),
-        value = online.metadata.support,
+        value = online.track.support,
         icon = R.drawable.heart_handshake
     )
 }

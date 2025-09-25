@@ -43,9 +43,9 @@ class ModuleViewModel @Inject constructor(
         versions.firstOrNull()?.second
     }
 
-    val isEmptyAbout get() = online.metadata.homepage.isBlank()
-            && online.metadata.source.isBlank()
-            && online.metadata.support.isBlank()
+    val isEmptyAbout get() = online.track.homepage.isBlank()
+            && online.track.source.isBlank()
+            && online.track.support.isBlank()
 
     var local: LocalModule? by mutableStateOf(null)
         private set
