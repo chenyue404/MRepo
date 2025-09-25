@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import androidx.core.net.toUri
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 @HiltViewModel
 class RepositoriesViewModel @Inject constructor(
@@ -58,7 +59,7 @@ class RepositoriesViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             refreshing {
-                urls.split("\n").forEach { url ->
+                for (url in urls.split("\n")) {
                     var repoUrl = url
                     val uri = url.toUri()
                     if (uri.scheme == null) {
@@ -66,6 +67,7 @@ class RepositoriesViewModel @Inject constructor(
                             .scheme("https")
                             .build()
                             .toString()
+                        repoUrl.toHttpUrlOrNull() ?: continue
                     }
                     if (!repoUrl.endsWith("/")) {
                         repoUrl += "/"
