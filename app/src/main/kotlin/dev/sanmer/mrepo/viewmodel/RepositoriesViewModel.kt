@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+import androidx.core.net.toUri
 
 @HiltViewModel
 class RepositoriesViewModel @Inject constructor(
@@ -29,6 +30,7 @@ class RepositoriesViewModel @Inject constructor(
         private set
     var progress by mutableStateOf(false)
         private set
+
     private inline fun <T> T.refreshing(callback: T.() -> Unit) {
         progress = true
         callback()
@@ -51,17 +53,29 @@ class RepositoriesViewModel @Inject constructor(
     }
 
     fun insert(
-        url: String,
+        urls: String,
         onFailure: (Throwable) -> Unit
     ) {
-        val repoUrl = if (url.endsWith("/")) url else "${url}/"
         viewModelScope.launch {
             refreshing {
-                modulesRepository.getRepo(repoUrl)
-                    .onFailure {
-                        Timber.e(it, "insert: $url")
-                        onFailure(it)
+                urls.split("\n").forEach { url ->
+                    var repoUrl = url
+                    val uri = url.toUri()
+                    if (uri.scheme == null) {
+                        repoUrl = uri.buildUpon()
+                            .scheme("https")
+                            .build()
+                            .toString()
                     }
+                    if (!repoUrl.endsWith("/")) {
+                        repoUrl += "/"
+                    }
+                    modulesRepository.getRepo(repoUrl)
+                        .onFailure {
+                            Timber.e(it, "insert: $url")
+                            onFailure(it)
+                        }
+                }
             }
         }
     }
