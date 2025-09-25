@@ -33,7 +33,7 @@ internal fun ModulesList(
     ) {
         items(
             items = list,
-            key = { UUID.randomUUID() }
+            key = { it.original.id }
         ) { module ->
             ModuleItem(
                 module = module,

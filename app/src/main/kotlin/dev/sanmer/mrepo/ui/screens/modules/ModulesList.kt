@@ -53,8 +53,8 @@ internal fun ModulesList(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(
-            items = list,
-            key = { UUID.randomUUID() }
+            items = list.distinctBy { it.original },
+            key = { it.original.id }
         ) { module ->
             ModuleItem(
                 module = module,

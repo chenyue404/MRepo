@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,8 +31,9 @@ class RepositoryViewModel @Inject constructor(
     private val modulesRepository: ModulesRepository,
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
-    private val repositoryMenu get() = userPreferencesRepository.data
-        .map { it.repositoryMenu }
+    private val repositoryMenu
+        get() = userPreferencesRepository.data
+            .map { it.repositoryMenu }
 
     var isSearch by mutableStateOf(false)
         private set
@@ -65,6 +67,10 @@ class RepositoryViewModel @Inject constructor(
         ) { online, local, menu ->
             cacheFlow.value = online.map {
                 it.wrap(local)
+            }.distinctBy {
+                it.original.let {
+                    it.id + it.name + it.author
+                }.lowercase(Locale.ROOT)
             }.sortedWith(
                 comparator(menu.option, menu.descending)
             ).let { list ->
