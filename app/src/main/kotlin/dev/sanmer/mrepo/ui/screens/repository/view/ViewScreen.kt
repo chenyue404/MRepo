@@ -13,6 +13,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import dev.sanmer.mrepo.compat.NetworkCompat.Compose.requestString
 import dev.sanmer.mrepo.ui.component.CollapsingTopAppBarDefaults
 import dev.sanmer.mrepo.ui.screens.repository.view.pages.AboutPage
 import dev.sanmer.mrepo.ui.screens.repository.view.pages.OverviewPage
@@ -46,7 +47,8 @@ fun ViewScreen(
                 updatableSize = viewModel.updatableSize,
                 hasAbout = !viewModel.isEmptyAbout
             )
-
+            val readmeResult = viewModel.online.readme.takeIf { it.isNotEmpty() }
+                ?.let { requestString(it) }
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier.fillMaxSize()
@@ -59,10 +61,12 @@ fun ViewScreen(
                         updatable = viewModel.isUpdatable,
                         setUpdatable = viewModel::insertUpdatable,
                         isProviderAlive = viewModel.isProviderAlive,
+                        readmeResult = readmeResult,
                         onInstall = { context, item ->
                             viewModel.downloader(context, item, true)
                         }
                     )
+
                     1 -> VersionsPage(
                         versions = viewModel.versions,
                         localVersionCode = viewModel.localVersionCode,
@@ -70,6 +74,7 @@ fun ViewScreen(
                         getProgress = viewModel::getProgress,
                         onDownload = viewModel::downloader
                     )
+
                     2 -> AboutPage(
                         online = viewModel.online
                     )

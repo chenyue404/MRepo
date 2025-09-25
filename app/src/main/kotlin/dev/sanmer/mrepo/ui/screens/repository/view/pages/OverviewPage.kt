@@ -60,6 +60,7 @@ internal fun OverviewPage(
     updatable: Boolean,
     setUpdatable: (Boolean) -> Unit,
     isProviderAlive: Boolean,
+    readmeResult: NetworkCompat.Compose.Value?,
     onInstall: (Context, VersionItem) -> Unit
 ) = Column(
     modifier = Modifier
@@ -108,15 +109,13 @@ internal fun OverviewPage(
         HorizontalDivider(thickness = 0.9.dp)
     }
 
-    online.readme.takeIf { it.isNotEmpty() }?.let {
+    readmeResult?.let {
         ReadMeItem(it)
     }
 }
 
 @Composable
-private fun ReadMeItem(url: String) {
-    val result = requestString(url)
-
+private fun ReadMeItem(result: NetworkCompat.Compose.Value) {
     Crossfade(
         targetState = result,
         label = "ReadMeItem"
