@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import dev.sanmer.mrepo.utils.StrUtil
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.util.Locale
 
 @SuppressLint("UnsafeOptInUsageError")
 @Serializable
@@ -21,6 +22,9 @@ data class OnlineModule(
 ) {
     val versionDisplay by lazy {
         StrUtil.getVersionDisplay(version, versionCode)
+    }
+    val uniqueId by lazy {
+        (id + name + author).lowercase(Locale.ROOT)
     }
 
     @Serializable

@@ -2,6 +2,7 @@ package dev.sanmer.mrepo.content
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import java.util.Locale
 
 @Parcelize
 data class Module(
@@ -14,4 +15,8 @@ data class Module(
     val updateJson: String,
     val state: State,
     val lastUpdated: Long
-) : Parcelable
+) : Parcelable {
+    val uniqueId by lazy {
+        (id + name + author).lowercase(Locale.ROOT)
+    }
+}

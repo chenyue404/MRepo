@@ -35,6 +35,7 @@ import dev.sanmer.mrepo.model.online.VersionItem
 import dev.sanmer.mrepo.ui.component.VersionItemBottomSheet
 import dev.sanmer.mrepo.ui.component.scrollbar.VerticalFastScrollbar
 import dev.sanmer.mrepo.viewmodel.ModulesViewModel
+import java.util.Locale
 import java.util.UUID
 
 @Composable
@@ -53,8 +54,8 @@ internal fun ModulesList(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(
-            items = list.distinctBy { it.original },
-            key = { it.original.id }
+            items = list,
+            key = { it.original.uniqueId }
         ) { module ->
             ModuleItem(
                 module = module,
@@ -165,20 +166,24 @@ private fun RemoveOrRestore(
 ) {
     Icon(
         modifier = Modifier.size(20.dp),
-        painter = painterResource(id = if (module.state == State.Remove) {
-            R.drawable.rotate
-        } else {
-            R.drawable.trash
-        }),
+        painter = painterResource(
+            id = if (module.state == State.Remove) {
+                R.drawable.rotate
+            } else {
+                R.drawable.trash
+            }
+        ),
         contentDescription = null
     )
 
     Spacer(modifier = Modifier.width(6.dp))
     Text(
-        text = stringResource(id = if (module.state == State.Remove) {
-            R.string.module_restore
-        } else {
-            R.string.module_remove
-        })
+        text = stringResource(
+            id = if (module.state == State.Remove) {
+                R.string.module_restore
+            } else {
+                R.string.module_remove
+            }
+        )
     )
 }

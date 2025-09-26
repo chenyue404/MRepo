@@ -68,9 +68,7 @@ class RepositoryViewModel @Inject constructor(
             cacheFlow.value = online.map {
                 it.wrap(local)
             }.distinctBy {
-                it.original.let {
-                    it.id + it.name + it.author
-                }.lowercase(Locale.ROOT)
+                it.original.uniqueId
             }.sortedWith(
                 comparator(menu.option, menu.descending)
             ).let { list ->
