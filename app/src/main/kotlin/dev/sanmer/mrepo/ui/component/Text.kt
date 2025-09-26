@@ -69,12 +69,14 @@ fun MarkdownText(
         modifier = modifier,
         factory = { TextView(it) },
         update = {
-            it.setLinkTextColor(linkTextColor)
-            it.highlightColor = style.background.toArgb()
-
-            it.textSize = style.fontSize.value
-            it.setTextColor(color.toArgb())
-            it.setBackgroundColor(style.background.toArgb())
+            it.apply {
+                setLinkTextColor(linkTextColor)
+//                highlightColor = style.background.toArgb()
+                setTextIsSelectable(true)
+                textSize = style.fontSize.value
+                setTextColor(color.toArgb())
+//                setBackgroundColor(style.background.toArgb())
+            }
             markdown.setMarkdown(it, text)
         }
     )
