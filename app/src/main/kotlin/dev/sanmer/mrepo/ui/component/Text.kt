@@ -76,6 +76,7 @@ fun MarkdownText(
                 textSize = style.fontSize.value
                 setTextColor(color.toArgb())
 //                setBackgroundColor(style.background.toArgb())
+                movementMethod = LinkMovementMethod.getInstance()
             }
             markdown.setMarkdown(it, text)
         }
